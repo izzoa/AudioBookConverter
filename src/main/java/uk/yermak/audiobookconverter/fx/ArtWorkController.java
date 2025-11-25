@@ -46,15 +46,30 @@ public class ArtWorkController {
     @FXML
     private void addImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
-        File sourceFolder = Settings.loadSetting().getSourceFolder();
-        fileChooser.setInitialDirectory(sourceFolder);
+        File sourceFolder = null;
+        try {
+            sourceFolder = Settings.loadSetting().getSourceFolder();
+            // Only set initial directory if it exists and is readable (important for macOS sandbox)
+            if (sourceFolder != null && sourceFolder.exists() && sourceFolder.isDirectory() && sourceFolder.canRead()) {
+                fileChooser.setInitialDirectory(sourceFolder);
+            }
+            // If not accessible, let macOS pick a reasonable default by not setting initialDirectory
+        } catch (Exception e) {
+            logger.error("Failed to load Source Folder and set Initial Directory", e);
+        }
         fileChooser.setTitle("Select JPG or PNG file");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("jpg", "*.jpg", "*.jpeg", "*.jfif"),
                 new FileChooser.ExtensionFilter("png", "*.png"),
                 new FileChooser.ExtensionFilter("bmp", "*.bmp"));
 
-        File file = fileChooser.showOpenDialog(AudiobookConverter.getEnv().getWindow());
+        File file;
+        try {
+            file = fileChooser.showOpenDialog(AudiobookConverter.getEnv().getWindow());
+        } catch (Exception e) {
+            logger.error("Failed to show file dialog", e);
+            return;
+        }
         logger.debug("Opened dialog for art image in folder: {}", sourceFolder);
         if (file != null) {
             try (var imageStream = new FileInputStream(file.getAbsolutePath())) {

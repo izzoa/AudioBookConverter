@@ -40,15 +40,31 @@ public class DialogHelper {
         JfxEnv env = AudiobookConverter.getEnv();
 
         final FileChooser fileChooser = new FileChooser();
-        File outputFolder = Settings.loadSetting().getOutputFolder();
-        fileChooser.setInitialDirectory(outputFolder);
+        try {
+            File outputFolder = Settings.loadSetting().getOutputFolder();
+            // Only set initial directory if it exists and is readable (important for macOS sandbox)
+            if (outputFolder != null && outputFolder.exists() && outputFolder.isDirectory() && outputFolder.canRead()) {
+                fileChooser.setInitialDirectory(outputFolder);
+            }
+            // If not accessible, let macOS pick a reasonable default by not setting initialDirectory
+        } catch (Exception e) {
+            logger.error("Failed to load Output Folder and set Initial Directory", e);
+            // Continue without setting initial directory - system will use default
+        }
         fileChooser.setInitialFileName(Utils.getOuputFilenameSuggestion(audioBookInfo));
         fileChooser.setTitle("Save AudioBook");
         String formatAsString = AudiobookConverter.getContext().getFormat().toString();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(formatAsString, "*." + formatAsString)
         );
-        File file = fileChooser.showSaveDialog(env.getWindow());
+        
+        File file;
+        try {
+            file = fileChooser.showSaveDialog(env.getWindow());
+        } catch (Exception e) {
+            logger.error("Failed to show save dialog", e);
+            return null;
+        }
         if (file == null) return null;
         File parentFolder = file.getParentFile();
         Settings.loadSetting().setOutputFolder(parentFolder.getAbsolutePath()).save();
@@ -60,9 +76,14 @@ public class DialogHelper {
         final FileChooser fileChooser = new FileChooser();
         try {
             File sourceFolder = Settings.loadSetting().getSourceFolder();
-            fileChooser.setInitialDirectory(sourceFolder);
+            // Only set initial directory if it exists and is readable (important for macOS sandbox)
+            if (sourceFolder != null && sourceFolder.exists() && sourceFolder.isDirectory() && sourceFolder.canRead()) {
+                fileChooser.setInitialDirectory(sourceFolder);
+            }
+            // If not accessible, let macOS pick a reasonable default by not setting initialDirectory
         } catch (Exception e) {
             logger.error("Failed to load Source Folder and set Initial Directory", e);
+            // Continue without setting initial directory - system will use default
         }
         StringJoiner filetypes = new StringJoiner("/");
 
@@ -72,7 +93,13 @@ public class DialogHelper {
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio", Arrays.asList(toSuffixes("*.", FILE_EXTENSIONS))));
 
-        List<File> files = fileChooser.showOpenMultipleDialog(window);
+        List<File> files;
+        try {
+            files = fileChooser.showOpenMultipleDialog(window);
+        } catch (Exception e) {
+            logger.error("Failed to show file dialog", e);
+            return null;
+        }
         if (files == null) return null;
 
         if (!files.isEmpty()) {
@@ -88,9 +115,14 @@ public class DialogHelper {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         try {
             File sourceFolder = Settings.loadSetting().getSourceFolder();
-            directoryChooser.setInitialDirectory(sourceFolder);
+            // Only set initial directory if it exists and is readable (important for macOS sandbox)
+            if (sourceFolder != null && sourceFolder.exists() && sourceFolder.isDirectory() && sourceFolder.canRead()) {
+                directoryChooser.setInitialDirectory(sourceFolder);
+            }
+            // If not accessible, let macOS pick a reasonable default by not setting initialDirectory
         } catch (Exception e) {
             logger.error("Failed to load Source Folder and set Initial Directory", e);
+            // Continue without setting initial directory - system will use default
         }
 
         StringJoiner filetypes = new StringJoiner("/");
@@ -98,7 +130,14 @@ public class DialogHelper {
         Arrays.stream(FILE_EXTENSIONS).map(String::toUpperCase).forEach(filetypes::add);
 
         directoryChooser.setTitle("Select folder with " + filetypes + " files for conversion");
-        File selectedDirectory = directoryChooser.showDialog(window);
+        
+        File selectedDirectory;
+        try {
+            selectedDirectory = directoryChooser.showDialog(window);
+        } catch (Exception e) {
+            logger.error("Failed to show folder dialog", e);
+            return null;
+        }
 
         if (selectedDirectory == null) return null;
         Settings.loadSetting().setSourceFolder(selectedDirectory.getAbsolutePath()).save();
