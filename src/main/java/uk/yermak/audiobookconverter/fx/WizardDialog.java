@@ -22,10 +22,12 @@ public class WizardDialog extends Dialog<Void> {
         hintsArea.setEditable(false);
         hintsArea.setFocusTraversable(false);
         hintsArea.setWrapText(true);
-        hintsArea.setFont(javafx.scene.text.Font.font("monospaced", 15));
 
         DialogPane dialogPane = getDialogPane();
         dialogPane.setContent(createWizardPane());
+        
+        // Apply Fluent Design styling
+        DialogStyleHelper.styleDialog(this);
 
         getDialogPane().getButtonTypes().addAll(ButtonType.PREVIOUS, ButtonType.NEXT, ButtonType.CLOSE);
 

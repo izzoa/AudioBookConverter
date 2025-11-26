@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.TransferMode;
@@ -86,6 +87,11 @@ public class FilesController {
     @FXML
     private Button startButton;
 
+    @FXML
+    private Menu recentSourceMenu;
+    
+    @FXML
+    private Menu recentOutputMenu;
 
     private final ContextMenu contextMenu = new ContextMenu();
 
@@ -111,6 +117,7 @@ public class FilesController {
         AudiobookConverter.getContext().setPresetName(settings.getPresets().get(settings.getLastUsedPreset()).getName());
 
         initFileOpenMenu();
+        refreshRecentMenus();
 
         ConversionContext context = AudiobookConverter.getContext();
         ObservableList<MediaInfo> selectedMedia = context.getSelectedMedia();
@@ -240,6 +247,7 @@ public class FilesController {
         errorStack.setFocusTraversable(false);
         errorStack.setWrapText(false);
         errorStack.setText(out.toString());
+        DialogStyleHelper.styleAlert(alert);
         alert.showAndWait();
     }
 
@@ -572,6 +580,7 @@ public class FilesController {
         alert.setContentText("Your setting will be copied into buffer and you will be redirected to GitHub issues page.\n" +
                 "Please describe your problem and paste settings into the issue.\n" +
                 "Note: Your settings may contain sensitive information like your user name, paths to your files, etc.\n");
+        DialogStyleHelper.styleAlert(alert);
         Optional<ButtonType> result = alert.showAndWait();
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -585,10 +594,285 @@ public class FilesController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Repair");
         alert.setContentText("Are you sure you want to restore settings to default?\nProgram will be closed.");
+        DialogStyleHelper.styleAlert(alert);
         Optional<ButtonType> result = alert.showAndWait();
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             Settings.clear();
             System.exit(0);
+        }
+    }
+
+    public void exportSettings(ActionEvent actionEvent) {
+        try {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Export Settings");
+            fileChooser.setInitialFileName("audiobookconverter-settings.json");
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
+            );
+            File file = fileChooser.showSaveDialog(AudiobookConverter.getEnv().getWindow());
+            if (file != null) {
+                Settings settings = Settings.loadSetting();
+                settings.exportToFile(file);
+                showInfoAlert("Export Successful", "Settings exported successfully to:\n" + file.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            logger.error("Failed to export settings", e);
+            showError(e);
+        }
+    }
+
+    public void importSettings(ActionEvent actionEvent) {
+        try {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Import Settings");
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
+            );
+            File file = fileChooser.showOpenDialog(AudiobookConverter.getEnv().getWindow());
+            if (file != null) {
+                Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Import Settings");
+                confirmAlert.setHeaderText("Import settings from file?");
+                confirmAlert.setContentText("This will replace your current settings.\nThe application will restart to apply changes.\n\nFile: " + file.getName());
+                DialogStyleHelper.styleAlert(confirmAlert);
+                Optional<ButtonType> result = confirmAlert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    Settings imported = Settings.importFromFile(file);
+                    imported.save();
+                    showInfoAlert("Import Successful", "Settings imported successfully.\nThe application will now restart.");
+                    // Restart application
+                    Platform.runLater(() -> {
+                        AudiobookConverter.getContext().stopConversions();
+                        System.exit(0);
+                    });
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Failed to import settings", e);
+            showError(e);
+        }
+    }
+
+    public void exportPresets(ActionEvent actionEvent) {
+        try {
+            Settings settings = Settings.loadSetting();
+            List<Preset> presets = settings.getPresets();
+            
+            if (presets.isEmpty()) {
+                showInfoAlert("No Presets", "There are no presets to export.");
+                return;
+            }
+
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Export Presets");
+            fileChooser.setInitialFileName("audiobookconverter-presets.json");
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
+            );
+            File file = fileChooser.showSaveDialog(AudiobookConverter.getEnv().getWindow());
+            if (file != null) {
+                Settings.exportPresetsToFile(presets, file);
+                showInfoAlert("Export Successful", 
+                        "Exported " + presets.size() + " preset(s) to:\n" + file.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            logger.error("Failed to export presets", e);
+            showError(e);
+        }
+    }
+
+    public void importPresets(ActionEvent actionEvent) {
+        try {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Import Presets");
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
+            );
+            File file = fileChooser.showOpenDialog(AudiobookConverter.getEnv().getWindow());
+            if (file != null) {
+                List<Preset> importedPresets = Settings.importPresetsFromFile(file);
+                
+                // Ask user whether to merge or replace
+                Alert choiceAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                choiceAlert.setTitle("Import Presets");
+                choiceAlert.setHeaderText("Found " + importedPresets.size() + " preset(s) to import");
+                choiceAlert.setContentText("How would you like to import these presets?");
+                
+                ButtonType mergeButton = new ButtonType("Merge (keep existing)");
+                ButtonType replaceButton = new ButtonType("Replace All");
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                
+                choiceAlert.getButtonTypes().setAll(mergeButton, replaceButton, cancelButton);
+                DialogStyleHelper.styleAlert(choiceAlert);
+                
+                Optional<ButtonType> result = choiceAlert.showAndWait();
+                if (result.isPresent()) {
+                    Settings settings = Settings.loadSetting();
+                    if (result.get() == mergeButton) {
+                        settings.mergePresets(importedPresets);
+                        settings.save();
+                        showInfoAlert("Import Successful", 
+                                "Merged " + importedPresets.size() + " preset(s).\nRestart the application to see changes in the preset dropdown.");
+                    } else if (result.get() == replaceButton) {
+                        settings.replacePresets(importedPresets);
+                        settings.save();
+                        showInfoAlert("Import Successful", 
+                                "Replaced all presets with " + importedPresets.size() + " imported preset(s).\nRestart the application to see changes.");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Failed to import presets", e);
+            showError(e);
+        }
+    }
+
+    private void showInfoAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        DialogStyleHelper.styleAlert(alert);
+        alert.showAndWait();
+    }
+
+    /**
+     * Refreshes the recent source and output folder menus from Settings.
+     */
+    public void refreshRecentMenus() {
+        Settings settings = Settings.loadSetting();
+        
+        // Refresh source folders menu
+        recentSourceMenu.getItems().clear();
+        List<String> recentSources = settings.getRecentSourceFolders();
+        if (recentSources.isEmpty()) {
+            MenuItem emptyItem = new MenuItem("(empty)");
+            emptyItem.setDisable(true);
+            recentSourceMenu.getItems().add(emptyItem);
+        } else {
+            for (String path : recentSources) {
+                File folder = new File(path);
+                if (folder.exists()) {
+                    MenuItem item = new MenuItem(shortenPath(path));
+                    item.setUserData(path);
+                    item.setOnAction(e -> openRecentSourceFolder(path));
+                    recentSourceMenu.getItems().add(item);
+                }
+            }
+            // If all paths were invalid, show empty
+            if (recentSourceMenu.getItems().isEmpty()) {
+                MenuItem emptyItem = new MenuItem("(empty)");
+                emptyItem.setDisable(true);
+                recentSourceMenu.getItems().add(emptyItem);
+            }
+        }
+        
+        // Refresh output folders menu
+        recentOutputMenu.getItems().clear();
+        List<String> recentOutputs = settings.getRecentOutputFolders();
+        if (recentOutputs.isEmpty()) {
+            MenuItem emptyItem = new MenuItem("(empty)");
+            emptyItem.setDisable(true);
+            recentOutputMenu.getItems().add(emptyItem);
+        } else {
+            for (String path : recentOutputs) {
+                File folder = new File(path);
+                if (folder.exists()) {
+                    MenuItem item = new MenuItem(shortenPath(path));
+                    item.setUserData(path);
+                    item.setOnAction(e -> openRecentOutputFolder(path));
+                    recentOutputMenu.getItems().add(item);
+                }
+            }
+            // If all paths were invalid, show empty
+            if (recentOutputMenu.getItems().isEmpty()) {
+                MenuItem emptyItem = new MenuItem("(empty)");
+                emptyItem.setDisable(true);
+                recentOutputMenu.getItems().add(emptyItem);
+            }
+        }
+    }
+
+    /**
+     * Shortens a path for display in menu, showing last 2-3 components.
+     */
+    private String shortenPath(String path) {
+        if (path.length() <= 50) return path;
+        File file = new File(path);
+        String name = file.getName();
+        File parent = file.getParentFile();
+        if (parent != null) {
+            String parentName = parent.getName();
+            File grandparent = parent.getParentFile();
+            if (grandparent != null) {
+                return "..." + File.separator + grandparent.getName() + File.separator + parentName + File.separator + name;
+            }
+            return "..." + File.separator + parentName + File.separator + name;
+        }
+        return path;
+    }
+
+    private void openRecentSourceFolder(String path) {
+        try {
+            File folder = new File(path);
+            if (folder.exists() && folder.isDirectory()) {
+                List<String> fileNames = DialogHelper.collectFiles(Collections.singletonList(folder));
+                if (!fileNames.isEmpty()) {
+                    processFiles(fileNames);
+                    if (!chaptersMode.get()) {
+                        if (!filesChapters.getTabs().contains(filesTab)) {
+                            filesChapters.getTabs().add(filesTab);
+                        }
+                        filesChapters.getSelectionModel().select(filesTab);
+                    }
+                }
+            } else {
+                showInfoAlert("Folder Not Found", "The folder no longer exists:\n" + path);
+                // Remove invalid entry and refresh
+                Settings settings = Settings.loadSetting();
+                settings.getRecentSourceFolders().remove(path);
+                settings.save();
+                refreshRecentMenus();
+            }
+        } catch (Exception e) {
+            showError(e);
+        }
+    }
+
+    private void openRecentOutputFolder(String path) {
+        try {
+            File folder = new File(path);
+            if (folder.exists() && folder.isDirectory()) {
+                // Set this as the current output folder
+                Settings settings = Settings.loadSetting();
+                settings.setOutputFolder(path);
+                settings.save();
+                showInfoAlert("Output Folder Set", "Output folder set to:\n" + path);
+            } else {
+                showInfoAlert("Folder Not Found", "The folder no longer exists:\n" + path);
+                // Remove invalid entry and refresh
+                Settings settings = Settings.loadSetting();
+                settings.getRecentOutputFolders().remove(path);
+                settings.save();
+                refreshRecentMenus();
+            }
+        } catch (Exception e) {
+            showError(e);
+        }
+    }
+
+    public void clearRecentFolders(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Clear Recent History");
+        alert.setContentText("Are you sure you want to clear all recent folder history?");
+        DialogStyleHelper.styleAlert(alert);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Settings settings = Settings.loadSetting();
+            settings.clearRecentFolders();
+            settings.save();
+            refreshRecentMenus();
         }
     }
 

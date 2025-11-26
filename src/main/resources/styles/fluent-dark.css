@@ -1,0 +1,767 @@
+/*
+ * AudioBookConverter - Fluent Design Dark Theme
+ * Dark mode color definitions following Microsoft Fluent Design
+ */
+
+.root {
+    /* Background Colors */
+    -fx-color-background: #202020;
+    -fx-color-background-secondary: #2D2D2D;
+    -fx-color-surface: #2D2D2D;
+    -fx-color-surface-secondary: #3D3D3D;
+    
+    /* Primary/Accent Colors - Adjusted for dark backgrounds */
+    -fx-color-primary: #4CC2FF;
+    -fx-color-primary-hover: #62CDFF;
+    -fx-color-primary-pressed: #3BADEA;
+    -fx-color-accent: #4CC2FF;
+    
+    /* Text Colors */
+    -fx-color-text-primary: #FFFFFF;
+    -fx-color-text-secondary: #B0B0B0;
+    -fx-color-text-disabled: #707070;
+    -fx-color-text-on-accent: #000000;
+    
+    /* Border Colors */
+    -fx-color-border: #404040;
+    -fx-color-border-strong: #505050;
+    -fx-color-border-subtle: #353535;
+    
+    /* Semantic Colors - Adjusted for dark backgrounds */
+    -fx-color-success: #6CCB5F;
+    -fx-color-warning: #FCE100;
+    -fx-color-error: #FF6B6B;
+    -fx-color-info: #4CC2FF;
+    
+    /* Apply base colors */
+    -fx-base: #202020;
+    -fx-background: #202020;
+    -fx-control-inner-background: #2D2D2D;
+    -fx-control-inner-background-alt: #353535;
+    -fx-text-fill: #FFFFFF;
+    -fx-text-background-color: #FFFFFF;
+    
+    /* Accent for focused elements */
+    -fx-accent: #4CC2FF;
+    -fx-focus-color: #4CC2FF;
+    -fx-faint-focus-color: rgba(76, 194, 255, 0.25);
+    
+    /* Selection colors */
+    -fx-selection-bar: rgba(76, 194, 255, 0.2);
+    -fx-selection-bar-non-focused: rgba(76, 194, 255, 0.1);
+    
+    /* Shadows for dark theme - more pronounced */
+    -fx-effect-shadow-sm: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0, 0, 2);
+    -fx-effect-shadow-md: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 4);
+    -fx-effect-shadow-lg: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 16, 0, 0, 8);
+}
+
+/* ============================================
+   TEXT COLORS
+   ============================================ */
+
+.text-primary {
+    -fx-text-fill: #FFFFFF;
+}
+
+.text-secondary {
+    -fx-text-fill: #B0B0B0;
+}
+
+.text-disabled {
+    -fx-text-fill: #707070;
+}
+
+.text-accent {
+    -fx-text-fill: #4CC2FF;
+}
+
+.text-success {
+    -fx-text-fill: #6CCB5F;
+}
+
+.text-warning {
+    -fx-text-fill: #FCE100;
+}
+
+.text-error {
+    -fx-text-fill: #FF6B6B;
+}
+
+/* ============================================
+   LABEL STYLES
+   ============================================ */
+
+.label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.label.text-secondary {
+    -fx-text-fill: #B0B0B0;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.button {
+    -fx-background-color: #3D3D3D;
+    -fx-border-color: #505050;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #4D4D4D;
+    -fx-border-color: #606060;
+}
+
+.button:pressed {
+    -fx-background-color: #353535;
+    -fx-border-color: #404040;
+}
+
+.button:focused {
+    -fx-border-color: #4CC2FF;
+    -fx-border-width: 2px;
+}
+
+.button:disabled {
+    -fx-opacity: 0.4;
+    -fx-cursor: default;
+}
+
+/* Primary Button */
+.button-primary, .button.default-button {
+    -fx-background-color: #4CC2FF;
+    -fx-border-color: #4CC2FF;
+    -fx-text-fill: #000000;
+}
+
+.button-primary:hover, .button.default-button:hover {
+    -fx-background-color: #62CDFF;
+    -fx-border-color: #62CDFF;
+}
+
+.button-primary:pressed, .button.default-button:pressed {
+    -fx-background-color: #3BADEA;
+    -fx-border-color: #3BADEA;
+}
+
+/* Secondary Button */
+.button-secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: #4CC2FF;
+    -fx-text-fill: #4CC2FF;
+}
+
+.button-secondary:hover {
+    -fx-background-color: rgba(76, 194, 255, 0.15);
+}
+
+/* Subtle Button */
+.button-subtle {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button-subtle:hover {
+    -fx-background-color: #3D3D3D;
+}
+
+/* ============================================
+   TEXT FIELD / TEXT AREA STYLES
+   ============================================ */
+
+.text-field, .text-area {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #505050;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #707070;
+    -fx-padding: 8px 12px;
+}
+
+.text-field:hover, .text-area:hover {
+    -fx-border-color: #606060;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #4CC2FF;
+    -fx-border-width: 1px 1px 2px 1px;
+    -fx-background-color: #353535;
+}
+
+.text-field:disabled, .text-area:disabled {
+    -fx-background-color: #252525;
+    -fx-text-fill: #707070;
+}
+
+/* ============================================
+   COMBO BOX STYLES
+   ============================================ */
+
+.combo-box {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #505050;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.combo-box:hover {
+    -fx-border-color: #606060;
+}
+
+.combo-box:focused {
+    -fx-border-color: #4CC2FF;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 6px 12px;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #505050;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 4);
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #3D3D3D;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(76, 194, 255, 0.2);
+    -fx-text-fill: #FFFFFF;
+}
+
+/* ============================================
+   CHECK BOX STYLES
+   ============================================ */
+
+.check-box {
+    -fx-text-fill: #FFFFFF;
+}
+
+.check-box .box {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #B0B0B0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 2px;
+}
+
+.check-box:hover .box {
+    -fx-border-color: #FFFFFF;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #4CC2FF;
+    -fx-border-color: #4CC2FF;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #000000;
+}
+
+/* ============================================
+   LIST VIEW STYLES
+   ============================================ */
+
+.list-view {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #404040;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 8px 12px;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #3D3D3D;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: rgba(76, 194, 255, 0.2);
+    -fx-text-fill: #FFFFFF;
+}
+
+.list-view .list-cell:selected:focused {
+    -fx-background-color: rgba(76, 194, 255, 0.25);
+    -fx-border-color: transparent transparent transparent #4CC2FF;
+    -fx-border-width: 0 0 0 3px;
+}
+
+.list-view:focused {
+    -fx-border-color: #4CC2FF;
+}
+
+/* ============================================
+   TABLE VIEW STYLES
+   ============================================ */
+
+.table-view {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #404040;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #353535;
+    -fx-border-color: #404040;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px 12px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #B0B0B0;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #353535 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #3D3D3D;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(76, 194, 255, 0.2);
+}
+
+.table-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 8px 12px;
+}
+
+/* ============================================
+   TREE TABLE VIEW STYLES
+   ============================================ */
+
+.tree-table-view {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #404040;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.tree-table-view .column-header {
+    -fx-background-color: #353535;
+    -fx-border-color: #404040;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px 12px;
+}
+
+.tree-table-view .column-header .label {
+    -fx-text-fill: #B0B0B0;
+    -fx-font-weight: bold;
+}
+
+.tree-table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #353535 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.tree-table-row-cell:hover {
+    -fx-background-color: #3D3D3D;
+}
+
+.tree-table-row-cell:selected {
+    -fx-background-color: rgba(76, 194, 255, 0.2);
+}
+
+.tree-table-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 8px 12px;
+}
+
+.tree-table-view:focused {
+    -fx-border-color: #4CC2FF;
+}
+
+/* ============================================
+   TOOLBAR STYLES
+   ============================================ */
+
+.tool-bar {
+    -fx-background-color: #252525;
+    -fx-border-color: transparent transparent #404040 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px 12px;
+    -fx-spacing: 8px;
+}
+
+.tool-bar > .container {
+    -fx-spacing: 8px;
+}
+
+.tool-bar .separator {
+    -fx-padding: 0 4px;
+}
+
+.tool-bar .separator .line {
+    -fx-border-color: #505050;
+    -fx-border-width: 0 1px 0 0;
+}
+
+/* ============================================
+   TAB PANE STYLES
+   ============================================ */
+
+.tab-pane {
+    -fx-tab-min-height: 40px;
+}
+
+.tab-pane > .tab-header-area {
+    -fx-background-color: #202020;
+    -fx-padding: 0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 10px 16px;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
+    -fx-text-fill: #B0B0B0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-background-color: #2D2D2D;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #4CC2FF transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+.tab-pane > .tab-content-area {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #404040;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* ============================================
+   MENU STYLES
+   ============================================ */
+
+.menu-bar {
+    -fx-background-color: #202020;
+    -fx-border-color: transparent transparent #404040 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 4px 8px;
+}
+
+.menu-bar .menu {
+    -fx-padding: 4px 8px;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.menu-bar .menu:hover,
+.menu-bar .menu:showing {
+    -fx-background-color: #3D3D3D;
+    -fx-background-radius: 4px;
+}
+
+.context-menu {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #505050;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 16, 0, 0, 4);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 8px 12px;
+}
+
+.menu-item .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.menu-item:hover,
+.menu-item:focused {
+    -fx-background-color: #3D3D3D;
+    -fx-background-radius: 4px;
+}
+
+.separator-menu-item .line {
+    -fx-border-color: #404040;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* ============================================
+   SCROLL PANE STYLES
+   ============================================ */
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #505050;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #606060;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #707070;
+}
+
+/* ============================================
+   PROGRESS BAR STYLES
+   ============================================ */
+
+.progress-bar {
+    -fx-background-color: #404040;
+    -fx-background-radius: 4px;
+    -fx-padding: 0;
+}
+
+.progress-bar .track {
+    -fx-background-color: #404040;
+    -fx-background-radius: 4px;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #4CC2FF;
+    -fx-background-radius: 4px;
+    -fx-background-insets: 0;
+    -fx-padding: 4px;
+}
+
+/* ============================================
+   SLIDER STYLES
+   ============================================ */
+
+.slider .track {
+    -fx-background-color: #404040;
+    -fx-background-radius: 4px;
+    -fx-pref-height: 4px;
+}
+
+.slider .thumb {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #4CC2FF;
+    -fx-border-width: 2px;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #3D3D3D;
+}
+
+.slider:focused .thumb {
+    -fx-effect: dropshadow(gaussian, rgba(76, 194, 255, 0.4), 4, 0, 0, 0);
+}
+
+/* ============================================
+   SPLIT PANE STYLES
+   ============================================ */
+
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #404040;
+    -fx-padding: 0 2px 0 2px;
+}
+
+.split-pane > .split-pane-divider:hover {
+    -fx-background-color: #4CC2FF;
+}
+
+/* ============================================
+   TITLED PANE STYLES
+   ============================================ */
+
+.titled-pane {
+    -fx-border-color: #404040;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.titled-pane > .title {
+    -fx-background-color: #353535;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-padding: 12px 16px;
+}
+
+.titled-pane > .title > .text {
+    -fx-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+.titled-pane > .content {
+    -fx-background-color: #2D2D2D;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-padding: 16px;
+}
+
+/* ============================================
+   TOOLTIP STYLES
+   ============================================ */
+
+.tooltip {
+    -fx-background-color: #3D3D3D;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #505050;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 4);
+}
+
+/* ============================================
+   CARD STYLES
+   ============================================ */
+
+.card {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #404040;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0, 0, 2);
+}
+
+.card-elevated {
+    -fx-background-color: #353535;
+    -fx-border-color: transparent;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0, 0, 4);
+}
+
+.card-interactive:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 12, 0, 0, 6);
+}
+
+/* ============================================
+   DIALOG STYLES
+   ============================================ */
+
+.dialog-pane {
+    -fx-background-color: #2D2D2D;
+    -fx-border-color: #505050;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 0;
+}
+
+.dialog-pane > .header-panel {
+    -fx-background-color: #2D2D2D;
+    -fx-padding: 24px 24px 16px 24px;
+}
+
+.dialog-pane > .content {
+    -fx-padding: 0 24px 16px 24px;
+}
+
+.dialog-pane > .button-bar {
+    -fx-background-color: #353535;
+    -fx-padding: 16px 24px;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* ============================================
+   ALERT STYLES
+   ============================================ */
+
+.alert .header-panel {
+    -fx-background-color: transparent;
+}
+
+.alert.information .header-panel .graphic {
+    -fx-background-color: #4CC2FF;
+}
+
+.alert.warning .header-panel .graphic {
+    -fx-background-color: #FCE100;
+}
+
+.alert.error .header-panel .graphic {
+    -fx-background-color: #FF6B6B;
+}
+
+.alert.confirmation .header-panel .graphic {
+    -fx-background-color: #6CCB5F;
+}
+
+/* ============================================
+   TOGGLE SWITCH (ControlsFX)
+   ============================================ */
+
+.toggle-switch {
+    -fx-text-fill: #FFFFFF;
+}
+
+.toggle-switch > .thumb-area {
+    -fx-background-color: #505050;
+    -fx-background-radius: 12px;
+}
+
+.toggle-switch > .thumb {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 50%;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0, 0, 1);
+}
+
+.toggle-switch:selected > .thumb-area {
+    -fx-background-color: #4CC2FF;
+}
+

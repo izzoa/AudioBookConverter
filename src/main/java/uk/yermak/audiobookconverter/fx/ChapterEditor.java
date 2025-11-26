@@ -192,6 +192,9 @@ class ChapterEditor {
         grid.add(saveAsDefault, 0, 3);
 
         dialog.getDialogPane().setContent(grid);
+        
+        // Apply Fluent Design styling
+        DialogStyleHelper.styleDialog(dialog);
 
         Platform.runLater(() -> preview.setText(Utils.renderChapter(chapter, context)));
 

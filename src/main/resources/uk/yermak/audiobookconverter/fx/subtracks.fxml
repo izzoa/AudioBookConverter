@@ -5,7 +5,7 @@
 <?import javafx.stage.Screen?>
 <?import org.controlsfx.control.ToggleSwitch?>
 <fx:root type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml"
-         gridLinesVisible="false" hgap="5" vgap="2">
+         gridLinesVisible="false" hgap="16" vgap="16" styleClass="settings-panel">
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
 
@@ -16,15 +16,15 @@
     </columnConstraints>
 
     <children>
-        <Label text="Select interval, seconds" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="Select interval, seconds" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="settings-row"/>
         <Spinner fx:id="intervalSpinner" initialValue="600" min="1" max="86400" editable="true"
-                 GridPane.columnIndex="1" GridPane.rowIndex="0"  GridPane.halignment="RIGHT" />
+                 GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
         <Label text="Multiple equal segments" GridPane.columnIndex="0" GridPane.rowIndex="1"
-               GridPane.halignment="LEFT"/>
+               GridPane.halignment="LEFT" styleClass="settings-row"/>
         <ToggleSwitch fx:id="splitOnceOrRepeat" GridPane.columnIndex="1" GridPane.rowIndex="1" selected="true" GridPane.halignment="RIGHT"/>
 
         <Label text="Automatically create chapters" GridPane.columnIndex="0" GridPane.rowIndex="2"
-               GridPane.halignment="LEFT" />
+               GridPane.halignment="LEFT" styleClass="settings-row"/>
         <ToggleSwitch fx:id="autoChaptersToggle" GridPane.columnIndex="1" GridPane.rowIndex="2" selected="true" GridPane.halignment="RIGHT"/>
     </children>
 </fx:root>

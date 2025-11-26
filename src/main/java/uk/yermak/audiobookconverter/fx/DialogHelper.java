@@ -67,7 +67,10 @@ public class DialogHelper {
         }
         if (file == null) return null;
         File parentFolder = file.getParentFile();
-        Settings.loadSetting().setOutputFolder(parentFolder.getAbsolutePath()).save();
+        Settings settings = Settings.loadSetting();
+        settings.setOutputFolder(parentFolder.getAbsolutePath());
+        settings.addRecentOutputFolder(parentFolder.getAbsolutePath());
+        settings.save();
         return file.getPath();
     }
 
@@ -105,7 +108,10 @@ public class DialogHelper {
         if (!files.isEmpty()) {
             File firstFile = files.get(0);
             File parentFile = firstFile.getParentFile();
-            Settings.loadSetting().setSourceFolder(parentFile.getAbsolutePath()).save();
+            Settings settings = Settings.loadSetting();
+            settings.setSourceFolder(parentFile.getAbsolutePath());
+            settings.addRecentSourceFolder(parentFile.getAbsolutePath());
+            settings.save();
         }
         return collectFiles(files);
     }
@@ -140,7 +146,10 @@ public class DialogHelper {
         }
 
         if (selectedDirectory == null) return null;
-        Settings.loadSetting().setSourceFolder(selectedDirectory.getAbsolutePath()).save();
+        Settings settings = Settings.loadSetting();
+        settings.setSourceFolder(selectedDirectory.getAbsolutePath());
+        settings.addRecentSourceFolder(selectedDirectory.getAbsolutePath());
+        settings.save();
 
         return collectFiles(Collections.singleton(selectedDirectory));
     }

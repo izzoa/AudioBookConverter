@@ -57,6 +57,9 @@ public class SubTracksDialog extends Dialog<Map<String, Object>> {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        
+        // Apply Fluent Design styling
+        DialogStyleHelper.styleDialog(this);
     }
 
 

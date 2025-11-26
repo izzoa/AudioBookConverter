@@ -40,6 +40,8 @@ public class ProgressComponent extends GridPane {
     @FXML
     private Label filesCount;
     @FXML
+    private Label speed;
+    @FXML
     private ProgressBar progressBar;
 
     @FXML
@@ -132,6 +134,7 @@ public class ProgressComponent extends GridPane {
         conversionProgress.elapsed.addListener((observable, oldValue, newValue) -> Platform.runLater(() -> elapsedTime.setText(Utils.formatTime(newValue.longValue()))));
         conversionProgress.remaining.addListener((observable, oldValue, newValue) -> Platform.runLater(() -> remainingTime.setText(Utils.formatTime(newValue.longValue()))));
         conversionProgress.state.addListener((observable, oldValue, newValue) -> Platform.runLater(() -> state.setText(newValue)));
+        conversionProgress.speed.addListener((observable, oldValue, newValue) -> Platform.runLater(() -> speed.setText(newValue)));
     }
 
     public boolean isOver() {

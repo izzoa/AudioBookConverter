@@ -1,0 +1,288 @@
+/*
+ * AudioBookConverter - Fluent Design Base Stylesheet
+ * Contains CSS variables, base resets, and foundational styles
+ */
+
+/* ============================================
+   ROOT VARIABLES - Shared across all themes
+   ============================================ */
+
+.root {
+    /* Typography */
+    -fx-font-family: 'Inter', 'Segoe UI Variable', 'Segoe UI', -apple-system, system-ui, sans-serif;
+    -fx-font-size: 14px;
+    
+    /* Font Sizes */
+    -fx-font-size-caption: 12px;
+    -fx-font-size-body: 14px;
+    -fx-font-size-body-large: 16px;
+    -fx-font-size-subtitle: 18px;
+    -fx-font-size-title: 24px;
+    -fx-font-size-display: 32px;
+    
+    /* Spacing Scale (4px base unit) */
+    -fx-spacing-xs: 4px;
+    -fx-spacing-sm: 8px;
+    -fx-spacing-md: 16px;
+    -fx-spacing-lg: 24px;
+    -fx-spacing-xl: 32px;
+    -fx-spacing-xxl: 48px;
+    
+    /* Border Radius */
+    -fx-radius-sm: 4px;
+    -fx-radius-md: 8px;
+    -fx-radius-lg: 12px;
+    -fx-radius-xl: 16px;
+    
+    /* Transitions */
+    -fx-transition-fast: 100ms;
+    -fx-transition-normal: 150ms;
+    -fx-transition-slow: 250ms;
+}
+
+/* ============================================
+   BASE COMPONENT RESETS
+   ============================================ */
+
+/* Remove default focus borders, we'll add our own */
+.focus-indicator {
+    -fx-border-color: transparent;
+}
+
+/* Consistent box sizing behavior */
+* {
+    -fx-background-insets: 0;
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITY CLASSES
+   ============================================ */
+
+.text-caption {
+    -fx-font-size: 12px;
+}
+
+.text-body {
+    -fx-font-size: 14px;
+}
+
+.text-body-large {
+    -fx-font-size: 16px;
+}
+
+.text-subtitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.text-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.text-display {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.text-bold {
+    -fx-font-weight: bold;
+}
+
+.text-medium {
+    -fx-font-weight: 500;
+}
+
+/* ============================================
+   SPACING UTILITY CLASSES
+   ============================================ */
+
+/* Padding */
+.p-xs { -fx-padding: 4px; }
+.p-sm { -fx-padding: 8px; }
+.p-md { -fx-padding: 16px; }
+.p-lg { -fx-padding: 24px; }
+.p-xl { -fx-padding: 32px; }
+
+/* Horizontal padding */
+.px-xs { -fx-padding: 0 4px 0 4px; }
+.px-sm { -fx-padding: 0 8px 0 8px; }
+.px-md { -fx-padding: 0 16px 0 16px; }
+.px-lg { -fx-padding: 0 24px 0 24px; }
+
+/* Vertical padding */
+.py-xs { -fx-padding: 4px 0 4px 0; }
+.py-sm { -fx-padding: 8px 0 8px 0; }
+.py-md { -fx-padding: 16px 0 16px 0; }
+.py-lg { -fx-padding: 24px 0 24px 0; }
+
+/* Gap/Spacing for containers */
+.gap-xs { -fx-spacing: 4px; }
+.gap-sm { -fx-spacing: 8px; }
+.gap-md { -fx-spacing: 16px; }
+.gap-lg { -fx-spacing: 24px; }
+.gap-xl { -fx-spacing: 32px; }
+
+/* ============================================
+   LAYOUT UTILITY CLASSES
+   ============================================ */
+
+.root-container {
+    -fx-padding: 0;
+}
+
+.content-area {
+    -fx-padding: 16px;
+}
+
+.section {
+    -fx-padding: 16px;
+    -fx-spacing: 12px;
+}
+
+.form-group {
+    -fx-spacing: 8px;
+}
+
+.button-bar {
+    -fx-spacing: 8px;
+    -fx-alignment: center-right;
+}
+
+/* ============================================
+   OVERFLOW AND RESIZE HANDLING
+   ============================================ */
+
+/* Ensure scroll panes clip content properly */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* List views should handle overflow */
+.list-view {
+    -fx-padding: 4px;
+}
+
+.list-view .list-cell {
+    -fx-padding: 8px 12px;
+}
+
+/* Table/Tree views overflow handling */
+.table-view,
+.tree-table-view {
+    -fx-padding: 0;
+}
+
+.table-view .column-header,
+.tree-table-view .column-header {
+    -fx-padding: 8px 12px;
+}
+
+/* Tab content should fill available space */
+.tab-pane > .tab-content-area {
+    -fx-padding: 0;
+}
+
+/* Ensure toolbars don't overflow - wrap buttons if needed */
+.tool-bar {
+    -fx-padding: 8px 12px;
+    -fx-spacing: 8px;
+}
+
+.tool-bar > .container {
+    -fx-spacing: 8px;
+}
+
+/* Menu bar should not overflow */
+.menu-bar {
+    -fx-padding: 0 8px;
+}
+
+/* Text areas and text fields should respect boundaries */
+.text-area,
+.text-field {
+    -fx-padding: 8px 12px;
+}
+
+/* Combo boxes should clip long text */
+.combo-box {
+    -fx-padding: 6px 12px;
+}
+
+.combo-box > .list-cell {
+    -fx-padding: 6px 8px;
+}
+
+/* Grid panes should have consistent gaps */
+.grid-pane {
+    -fx-hgap: 12px;
+    -fx-vgap: 12px;
+}
+
+/* VBox and HBox default spacing */
+.vbox {
+    -fx-spacing: 8px;
+}
+
+.hbox {
+    -fx-spacing: 8px;
+}
+
+/* Ensure labels truncate with ellipsis */
+.label {
+    -fx-text-overrun: ellipsis;
+}
+
+/* Buttons should have minimum sizes but truncate text */
+.button {
+    -fx-min-width: 64px;
+    -fx-padding: 8px 16px;
+    -fx-text-overrun: ellipsis;
+}
+
+/* ============================================
+   SCROLLBAR BASE STYLES
+   ============================================ */
+
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 4px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-radius: 4px;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
+}
+
+/* Thin scrollbar for modern look */
+.scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 10px;
+}
+

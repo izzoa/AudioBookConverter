@@ -15,6 +15,7 @@ import org.controlsfx.control.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.yermak.audiobookconverter.fx.ConversionContext;
+import uk.yermak.audiobookconverter.fx.DialogStyleHelper;
 import uk.yermak.audiobookconverter.fx.JfxEnv;
 import uk.yermak.audiobookconverter.fx.WizardDialog;
 
@@ -102,11 +103,10 @@ public class AudiobookConverter extends Application {
             stage.setMinWidth(primary.getVisualBounds().getWidth() * 0.4);
             env = new JfxEnv(scene, getHostServices());
 
+            // Load stylesheets based on theme preference
             Settings settings = Settings.loadSetting();
             boolean dark = settings.isDarkMode();
-            if (dark) {
-                env.setDarkMode(dark);
-            }
+            env.loadStylesheets(dark);
 
             stage.show();
 
@@ -194,6 +194,7 @@ public class AudiobookConverter extends Application {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("New Version Available!");
                         alert.setContentText("Would you like to download new version?");
+                        DialogStyleHelper.styleAlert(alert);
                         Optional<ButtonType> result = alert.showAndWait();
                         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                             AudiobookConverter.getEnv().showDocument("https://store.steampowered.com/app/1529240/AudioBookConverter/");

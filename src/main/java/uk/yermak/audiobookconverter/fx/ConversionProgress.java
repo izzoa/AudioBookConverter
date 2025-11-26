@@ -26,6 +26,7 @@ public class ConversionProgress implements Runnable {
     SimpleStringProperty filesCount = new SimpleStringProperty();
     SimpleDoubleProperty progress = new SimpleDoubleProperty();
     SimpleStringProperty state = new SimpleStringProperty("");
+    SimpleStringProperty speed = new SimpleStringProperty("Calculating...");
 
     private long startTime;
     private boolean finished;
@@ -109,6 +110,16 @@ public class ConversionProgress implements Runnable {
             this.progress.set(progress);
             this.remaining.set(remainingTime);
             this.size.set((long) (estimatedSize / progress));
+            
+            // Calculate processing speed (duration processed per second of real time)
+            if (delta > 0) {
+                double speedRatio = (double) currentDuration / delta;
+                if (speedRatio >= 1.0) {
+                    this.speed.set(String.format("%.1fx realtime", speedRatio));
+                } else {
+                    this.speed.set(String.format("%.1fx slower", 1.0 / speedRatio));
+                }
+            }
         }
     }
 

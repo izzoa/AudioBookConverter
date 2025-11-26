@@ -1,0 +1,464 @@
+/*
+ * AudioBookConverter - Component-Specific Styles
+ * Additional styles for application-specific components
+ */
+
+/* ============================================
+   STATUS INDICATORS
+   ============================================ */
+
+.status-ready {
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+.status-in-progress {
+    -fx-text-fill: -fx-color-info;
+}
+
+.status-paused {
+    -fx-text-fill: -fx-color-warning;
+}
+
+.status-complete {
+    -fx-text-fill: -fx-color-success;
+}
+
+.status-error {
+    -fx-text-fill: -fx-color-error;
+}
+
+/* ============================================
+   FILE LIST ITEMS
+   ============================================ */
+
+.file-item {
+    -fx-padding: 8px 12px;
+    -fx-spacing: 8px;
+}
+
+.file-item-icon {
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+}
+
+.file-item-name {
+    -fx-font-weight: normal;
+}
+
+.file-item-duration {
+    -fx-font-size: 12px;
+}
+
+/* ============================================
+   CHAPTER LIST ITEMS
+   ============================================ */
+
+.chapter-item {
+    -fx-padding: 10px 12px;
+    -fx-spacing: 8px;
+}
+
+.chapter-number {
+    -fx-font-weight: bold;
+    -fx-min-width: 30px;
+}
+
+.chapter-title {
+    -fx-font-weight: normal;
+}
+
+.chapter-duration {
+    -fx-font-size: 12px;
+}
+
+/* ============================================
+   PROGRESS LIST ITEMS
+   ============================================ */
+
+.progress-item {
+    -fx-padding: 12px;
+    -fx-spacing: 8px;
+}
+
+.progress-item .progress-bar {
+    -fx-pref-height: 8px;
+}
+
+.progress-title {
+    -fx-font-weight: bold;
+}
+
+.progress-info {
+    -fx-font-size: 12px;
+}
+
+/* ============================================
+   BOOK INFO FORM
+   ============================================ */
+
+.book-info-form {
+    -fx-padding: 16px;
+    -fx-spacing: 12px;
+}
+
+.book-info-form .label {
+    -fx-min-width: 100px;
+}
+
+.book-info-form .text-field {
+    -fx-pref-width: 300px;
+}
+
+/* ============================================
+   ARTWORK PANEL
+   ============================================ */
+
+.artwork-container {
+    -fx-padding: 16px;
+    -fx-spacing: 12px;
+}
+
+.artwork-preview {
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
+}
+
+.artwork-placeholder {
+    -fx-alignment: center;
+    -fx-min-height: 150px;
+    -fx-border-style: dashed;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+}
+
+.artwork-drop-zone {
+    -fx-border-style: dashed;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-padding: 32px;
+    -fx-alignment: center;
+}
+
+.artwork-drop-zone-active {
+    -fx-border-width: 3px;
+}
+
+/* ============================================
+   OUTPUT SETTINGS PANEL
+   ============================================ */
+
+.output-settings {
+    -fx-padding: 16px;
+    -fx-spacing: 16px;
+}
+
+.output-settings .section-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 8px 0;
+}
+
+.preset-selector {
+    -fx-pref-width: 200px;
+}
+
+.format-selector {
+    -fx-pref-width: 150px;
+}
+
+.quality-slider {
+    -fx-pref-width: 200px;
+}
+
+/* ============================================
+   MEDIA PLAYER CONTROLS
+   ============================================ */
+
+.media-player {
+    -fx-padding: 12px 16px;
+    -fx-spacing: 12px;
+}
+
+.media-player-controls {
+    -fx-spacing: 8px;
+    -fx-alignment: center;
+}
+
+.media-player-button {
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-padding: 8px;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+}
+
+.media-player-button-large {
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-padding: 12px;
+}
+
+.media-player-slider {
+    -fx-pref-width: 300px;
+}
+
+.media-player-time {
+    -fx-font-size: 12px;
+    -fx-font-family: monospace;
+    -fx-min-width: 60px;
+}
+
+/* ============================================
+   SETTINGS DIALOG
+   ============================================ */
+
+.settings-panel {
+    -fx-padding: 16px 24px;
+    -fx-spacing: 16px;
+}
+
+.settings-section {
+    -fx-spacing: 12px;
+}
+
+.settings-section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 4px 0;
+}
+
+.settings-row {
+    -fx-spacing: 16px;
+    -fx-alignment: center-left;
+}
+
+.settings-row .label {
+    -fx-min-width: 180px;
+}
+
+.settings-description {
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+    -fx-padding: 4px 0 0 0;
+}
+
+/* ============================================
+   CONVERSION QUEUE
+   ============================================ */
+
+.queue-container {
+    -fx-padding: 8px;
+    -fx-spacing: 8px;
+}
+
+.queue-item {
+    -fx-padding: 12px;
+    -fx-spacing: 8px;
+}
+
+.queue-item-title {
+    -fx-font-weight: bold;
+}
+
+.queue-item-info {
+    -fx-font-size: 12px;
+}
+
+.queue-item-progress {
+    -fx-pref-height: 6px;
+}
+
+/* ============================================
+   EMPTY STATES
+   ============================================ */
+
+.empty-state {
+    -fx-padding: 48px;
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+}
+
+.empty-state-icon {
+    -fx-font-size: 48px;
+}
+
+.empty-state-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.empty-state-message {
+    -fx-font-size: 14px;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-max-width: 300px;
+}
+
+/* ============================================
+   TOOLBAR
+   ============================================ */
+
+.toolbar {
+    -fx-padding: 8px 16px;
+    -fx-spacing: 8px;
+}
+
+.toolbar-button {
+    -fx-padding: 8px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+}
+
+.toolbar-separator {
+    -fx-padding: 0 8px;
+}
+
+/* ============================================
+   BADGES AND CHIPS
+   ============================================ */
+
+.badge {
+    -fx-padding: 2px 8px;
+    -fx-background-radius: 12px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-primary {
+    -fx-background-color: -fx-color-primary;
+    -fx-text-fill: -fx-color-text-on-accent;
+}
+
+.badge-success {
+    -fx-background-color: -fx-color-success;
+    -fx-text-fill: white;
+}
+
+.badge-warning {
+    -fx-background-color: -fx-color-warning;
+    -fx-text-fill: black;
+}
+
+.badge-error {
+    -fx-background-color: -fx-color-error;
+    -fx-text-fill: white;
+}
+
+.chip {
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-font-size: 13px;
+}
+
+/* ============================================
+   DIVIDERS
+   ============================================ */
+
+.divider-horizontal {
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 8px 0;
+}
+
+.divider-vertical {
+    -fx-border-width: 0 1px 0 0;
+    -fx-padding: 0 8px;
+}
+
+/* ============================================
+   ICON STYLES
+   ============================================ */
+
+.icon {
+    -fx-font-family: 'Segoe Fluent Icons', 'Segoe MDL2 Assets';
+}
+
+.icon-xs {
+    -fx-font-size: 12px;
+}
+
+.icon-sm {
+    -fx-font-size: 16px;
+}
+
+.icon-md {
+    -fx-font-size: 20px;
+}
+
+.icon-lg {
+    -fx-font-size: 24px;
+}
+
+.icon-xl {
+    -fx-font-size: 32px;
+}
+
+/* ============================================
+   ANIMATION CLASSES
+   ============================================ */
+
+.fade-in {
+    -fx-opacity: 1;
+}
+
+.fade-out {
+    -fx-opacity: 0;
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+
+.loading-spinner {
+    -fx-progress-color: -fx-color-primary;
+}
+
+/* ============================================
+   DRAG AND DROP OVERLAY
+   ============================================ */
+
+.drop-overlay {
+    -fx-background-color: rgba(0, 120, 212, 0.1);
+    -fx-border-color: -fx-color-primary;
+    -fx-border-width: 3px;
+    -fx-border-style: dashed;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}
+
+/* ============================================
+   NOTIFICATION STYLES
+   ============================================ */
+
+.notification {
+    -fx-padding: 12px 16px;
+    -fx-spacing: 12px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 4);
+}
+
+.notification-info {
+    -fx-background-color: -fx-color-surface;
+    -fx-border-color: -fx-color-info;
+    -fx-border-width: 0 0 0 4px;
+}
+
+.notification-success {
+    -fx-background-color: -fx-color-surface;
+    -fx-border-color: -fx-color-success;
+    -fx-border-width: 0 0 0 4px;
+}
+
+.notification-warning {
+    -fx-background-color: -fx-color-surface;
+    -fx-border-color: -fx-color-warning;
+    -fx-border-width: 0 0 0 4px;
+}
+
+.notification-error {
+    -fx-background-color: -fx-color-surface;
+    -fx-border-color: -fx-color-error;
+    -fx-border-width: 0 0 0 4px;
+}
+

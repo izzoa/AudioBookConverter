@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.yermak.audiobookconverter.book.Convertable;
 import uk.yermak.audiobookconverter.book.MediaInfo;
+import uk.yermak.audiobookconverter.fx.ErrorCatalog;
+import uk.yermak.audiobookconverter.fx.ErrorHandler;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -101,9 +103,19 @@ public class ConversionJob implements Runnable {
             finished();
         } catch (Exception e) {
             logger.error("Error during parallel conversion", e);
-            e.printStackTrace();
+            
+            // Format technical details for error display
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
+            String technicalDetails = "Output: " + outputDestination + "\n\n" +
+                    "Exception: " + e.getClass().getSimpleName() + "\n" +
+                    "Message: " + (e.getMessage() != null ? e.getMessage() : "No message") + "\n\n" +
+                    "Stack Trace:\n" + sw.toString();
+            
+            // Show user-friendly error dialog
+            ErrorCatalog.ErrorInfo errorInfo = ErrorCatalog.fromException(e);
+            ErrorHandler.showError(errorInfo.code(), technicalDetails);
+            
             error(e.getMessage() + "; " + sw.getBuffer().toString());
         }
     }

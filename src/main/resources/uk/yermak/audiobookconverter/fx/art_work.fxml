@@ -5,23 +5,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.stage.Screen?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="uk.yermak.audiobookconverter.fx.ArtWorkController" prefHeight="${screen.visualBounds.height*0.03}" vgap="5"
-          gridLinesVisible="false">
+          fx:controller="uk.yermak.audiobookconverter.fx.ArtWorkController" vgap="4" hgap="8"
+          gridLinesVisible="false" styleClass="artwork-container">
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
 
     <padding>
-        <Insets top="5" right="5" bottom="0" left="5"/>
+        <Insets top="8" right="12" bottom="8" left="12"/>
     </padding>
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS"/>
-        <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="NEVER"/>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="75"/>
+        <ColumnConstraints hgrow="NEVER" percentWidth="12"/>
+        <ColumnConstraints hgrow="NEVER" percentWidth="12"/>
     </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+    </rowConstraints>
     <children>
         <ListView fx:id="imageList" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="4"
-                  orientation="HORIZONTAL" >
+                  orientation="HORIZONTAL" GridPane.vgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="%artwork.tooltip.list"/>
             </tooltip>

@@ -10,6 +10,7 @@ import org.stringtemplate.v4.*;
 import uk.yermak.audiobookconverter.book.AudioBookInfo;
 import uk.yermak.audiobookconverter.book.Chapter;
 import uk.yermak.audiobookconverter.book.Part;
+import uk.yermak.audiobookconverter.fx.FilenameValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,19 +83,8 @@ public class Utils {
         filenameTemplate.add("YEAR", bookInfo.year().trimToNull());
 
         String result = filenameTemplate.render();
-        char[] toRemove = new char[]{':', '\\', '/', '>', '<', '|', '?', '*', '"'};
-        for (char c : toRemove) {
-            result = StringUtils.remove(result, c);
-        }
-        String mp3Filename;
-
-        if (StringUtils.isBlank(result)) {
-            mp3Filename = "NewBook";
-        } else {
-            mp3Filename = result;
-        }
-        return mp3Filename;
-//        return mp3Filename.replaceFirst("\\.\\w*$", ".m4b");
+        // Use cross-platform filename sanitization
+        return FilenameValidator.sanitizeFilename(result);
     }
 
     public static long checksumCRC32(File file) {
@@ -144,19 +134,8 @@ public class Utils {
         context.forEach((key, value) -> partTemplate.add(key, value.apply(part)));
 
         String result = partTemplate.render();
-        char[] toRemove = new char[]{':', '\\', '/', '>', '<', '|', '?', '*', '"'};
-        for (char c : toRemove) {
-            result = StringUtils.remove(result, c);
-        }
-        String mp3Filename;
-
-        if (StringUtils.isBlank(result)) {
-            mp3Filename = "NewBook";
-        } else {
-            mp3Filename = result;
-        }
-        return mp3Filename;
-
+        // Use cross-platform filename sanitization
+        return FilenameValidator.sanitizeFilename(result);
     }
 
     public static String cleanText(String text) {

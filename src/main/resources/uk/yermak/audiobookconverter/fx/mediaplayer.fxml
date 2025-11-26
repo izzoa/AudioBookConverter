@@ -4,13 +4,14 @@
 <?import javafx.stage.Screen?>
 <?import javafx.geometry.Insets?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="uk.yermak.audiobookconverter.fx.MediaPlayerController" VBox.vgrow="NEVER" hgap="10">
+          fx:controller="uk.yermak.audiobookconverter.fx.MediaPlayerController" VBox.vgrow="NEVER" hgap="8" vgap="2"
+          styleClass="media-player" maxHeight="60">
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
 
     </fx:define>
     <padding>
-        <Insets top="0" right="10" bottom="0" left="10"/>
+        <Insets top="4" right="12" bottom="4" left="12"/>
     </padding>
 
     <columnConstraints>
@@ -22,7 +23,7 @@
     </columnConstraints>
 
     <Button fx:id="playButton"
-            onAction="#play" text="&#x25B6;&#x23F8;" style="-fx-font-size: 15px;"
+            onAction="#play" text="&#x25B6;&#x23F8;" styleClass="media-player-button, media-player-button-large"
             GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="2">
         <tooltip>
             <Tooltip text="%mediaplayer.tooltip.playpause"/>
@@ -31,13 +32,13 @@
 
 
     <Slider fx:id="timelapse" minorTickCount="4" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM"
-            minWidth="${screen.visualBounds.width * 0.35}" majorTickUnit="1"
+            minWidth="150" majorTickUnit="1"
             GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3" >
         <tooltip>
             <Tooltip text="%mediaplayer.tooltip.timeslider"/>
         </tooltip>
     </Slider>
-    <Label fx:id="volumeSign" text="&#x1F50A;" style="-fx-font-size: 24px;"
+    <Label fx:id="volumeSign" text="&#x1F50A;" styleClass="icon-lg"
            GridPane.rowIndex="0" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowSpan="2"/>
 
     <Slider fx:id="volume" orientation="VERTICAL" maxHeight="24"
@@ -48,7 +49,7 @@
         </tooltip>
 
     </Slider>
-    <Label fx:id="playTime" text="00:00:00"
+    <Label fx:id="playTime" text="00:00:00" styleClass="media-player-time, text-caption"
            GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.halignment="LEFT">
         <tooltip>
             <Tooltip text="%mediaplayer.tooltip.playtime"/>
@@ -56,7 +57,7 @@
     </Label>
 
 
-    <Label fx:id="totalTime" text="00:00:00"
+    <Label fx:id="totalTime" text="00:00:00" styleClass="media-player-time, text-caption"
            GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
         <tooltip>
             <Tooltip text="%mediaplayer.tooltip.totaltime"/>

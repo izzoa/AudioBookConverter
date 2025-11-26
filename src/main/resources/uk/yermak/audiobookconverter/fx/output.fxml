@@ -6,26 +6,32 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.stage.Screen?>
 <?import java.lang.String?>
-<GridPane xmlns:fx="http://javafx.com/fxml" hgap="5" vgap="5"
+<GridPane xmlns:fx="http://javafx.com/fxml" hgap="6" vgap="4"
           fx:controller="uk.yermak.audiobookconverter.fx.OutputController"
-          gridLinesVisible="false">
+          gridLinesVisible="false" styleClass="output-settings">
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
 
     <padding>
-        <Insets top="5" right="5" bottom="0" left="5"/>
+        <Insets top="4" right="12" bottom="4" left="12"/>
     </padding>
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS"/>
-        <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="ALWAYS"/>
-        <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="ALWAYS"/>
-        <ColumnConstraints hgrow="NEVER"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="10"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14"/>
+        <ColumnConstraints hgrow="NEVER" percentWidth="3"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14"/>
+        <ColumnConstraints hgrow="NEVER" percentWidth="3"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14"/>
     </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+    </rowConstraints>
     <children>
         <fx:define>
             <ToggleGroup fx:id="br"/>

@@ -10,16 +10,18 @@
 <VBox fx:controller="uk.yermak.audiobookconverter.fx.FilesController"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="root"
+      styleClass="root-container"
       prefWidth="${screen.visualBounds.width * 0.70}"
       prefHeight="${screen.visualBounds.height * 0.80}"
-      alignment="BOTTOM_CENTER"
+      minWidth="600"
+      minHeight="500"
 >
 
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
 
-    <MenuBar>
+    <MenuBar VBox.vgrow="NEVER">
         <Menu fx:id="mFile" text="File">
             <Menu text="Add...">
                 <MenuItem text="Files" onAction="#selectFiles">
@@ -34,6 +36,16 @@
                     </accelerator>
                 </MenuItem>
 
+            </Menu>
+            <Menu fx:id="recentMenu" text="Recent">
+                <Menu fx:id="recentSourceMenu" text="Source Folders">
+                    <MenuItem text="(empty)" disable="true"/>
+                </Menu>
+                <Menu fx:id="recentOutputMenu" text="Output Folders">
+                    <MenuItem text="(empty)" disable="true"/>
+                </Menu>
+                <SeparatorMenuItem/>
+                <MenuItem text="Clear Recent History" onAction="#clearRecentFolders"/>
             </Menu>
             <SeparatorMenuItem/>
             <MenuItem fx:id="removeMenu" text="Remove" onAction="#remove">
@@ -129,6 +141,13 @@
         </Menu>
         <Menu text="System">
             <MenuItem text="Settings" onAction="#settings"/>
+            <SeparatorMenuItem/>
+            <MenuItem text="Export Settings..." onAction="#exportSettings"/>
+            <MenuItem text="Import Settings..." onAction="#importSettings"/>
+            <SeparatorMenuItem/>
+            <MenuItem text="Export Presets..." onAction="#exportPresets"/>
+            <MenuItem text="Import Presets..." onAction="#importPresets"/>
+            <SeparatorMenuItem/>
             <MenuItem text="Repair" onAction="#repair"/>
             <MenuItem text="Check new version" onAction="#checkVersion"/>
         </Menu>
@@ -143,19 +162,23 @@
     </MenuBar>
 
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="8" right="8" bottom="8" left="8"/>
     </padding>
 
-    <TabPane fx:id="filesChapters" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+    <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.5">
+    <TabPane fx:id="filesChapters" SplitPane.resizableWithParent="true">
             <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
+                <Insets top="8" right="8" bottom="8" left="8"/>
             </padding>
 
             <Tab text="Queue" closable="false" fx:id="queueTab">
-                <VBox>
+                <VBox spacing="8">
+                    <padding>
+                        <Insets top="8" right="8" bottom="8" left="8"/>
+                    </padding>
                     <ToolBar>
                         <Button text="%queue.button.newbook" minWidth="${screen.visualBounds.width * 0.04}"
-                                style="-fx-font-size: 15;"
+                                styleClass="button-primary"
                                 onAction="#addFiles">
                             <tooltip>
                                 <Tooltip text="%queue.tooltip.newbook"/>
@@ -189,7 +212,7 @@
                         </Button>
 
                     </ToolBar>
-                    <ListView fx:id="progressQueue" prefHeight="${screen.visualBounds.height * 0.25}" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="progressQueue" minHeight="100" VBox.vgrow="ALWAYS">
                         <tooltip>
                             <Tooltip text="%queue.tooltip.list"/>
                         </tooltip>
@@ -199,7 +222,10 @@
 
 
             <Tab fx:id="filesTab" text="Audio files" closable="false">
-                <VBox>
+                <VBox spacing="8">
+                    <padding>
+                        <Insets top="8" right="8" bottom="8" left="8"/>
+                    </padding>
                     <ToolBar>
                         <Button text="Add" minWidth="${screen.visualBounds.width * 0.04}"
                                 onAction="#addFiles">
@@ -244,7 +270,7 @@
                                 minWidth="${screen.visualBounds.width * 0.04}"
                                 onAction="#importChapters"
                                 GridPane.valignment="TOP"
-                                style="-fx-font-size: 15;">
+                                styleClass="button-secondary">
                             <tooltip>
                                 <Tooltip text="%files.tooltip.button_chapters"/>
                             </tooltip>
@@ -255,17 +281,20 @@
                         <Button fx:id="startButton" text="Start" disable="false" GridPane.halignment="CENTER"
                                 minWidth="${screen.visualBounds.width * 0.04}"
                                 onAction="#start"
-                                style="-fx-font-size: 15;">
+                                styleClass="button-primary">
                             <tooltip>
                                 <Tooltip text="%files.tooltip.button_start"/>
                             </tooltip>
                         </Button>
                     </ToolBar>
-                    <FileListComponent fx:id="fileList" prefHeight="${screen.visualBounds.height * 0.25}" VBox.vgrow="ALWAYS"/>
+                    <FileListComponent fx:id="fileList" minHeight="100" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </Tab>
             <Tab fx:id="chaptersTab" text="Chapters" closable="false">
-                <VBox>
+                <VBox spacing="8">
+                    <padding>
+                        <Insets top="8" right="8" bottom="8" left="8"/>
+                    </padding>
                     <ToolBar>
                         <Button text="Add" minWidth="${screen.visualBounds.width * 0.04}"
                                 onAction="#addFiles">
@@ -344,7 +373,7 @@
                         <Button text="Start" disable="false" GridPane.halignment="CENTER"
                                 minWidth="${screen.visualBounds.width * 0.04}"
                                 onAction="#start"
-                                style="-fx-font-size: 15;"
+                                styleClass="button-primary"
                         >
                             <tooltip>
                                 <Tooltip text="%chapters.tooltip.button_start"/>
@@ -352,44 +381,48 @@
                         </Button>
 
                     </ToolBar>
-                    <BookStructureComponent fx:id="bookStructure" editable="true" prefHeight="${screen.visualBounds.height * 0.025}" VBox.vgrow="ALWAYS">
+                    <BookStructureComponent fx:id="bookStructure" editable="true" minHeight="100" VBox.vgrow="ALWAYS">
                         <columns>
                             <TreeTableColumn text="Title" fx:id="chapterColumn" sortable="false"
-                                             prefWidth="${screen.visualBounds.width * 0.1}"/>
-                            <TreeTableColumn text="Duration" fx:id="durationColumn" sortable="false"/>
+                                             minWidth="150" prefWidth="${screen.visualBounds.width * 0.15}"/>
+                            <TreeTableColumn text="Duration" fx:id="durationColumn" sortable="false"
+                                             minWidth="80" prefWidth="100"/>
                             <TreeTableColumn text="Details" fx:id="detailsColumn" sortable="false"
-                                             prefWidth="${screen.visualBounds.width * 0.2}"/>
+                                             minWidth="150" prefWidth="${screen.visualBounds.width * 0.2}"/>
                         </columns>
                     </BookStructureComponent>
                 </VBox>
             </Tab>
         </TabPane>
 
-    <fx:include source="mediaplayer.fxml"/>
+    <VBox SplitPane.resizableWithParent="true">
+        <fx:include source="mediaplayer.fxml"/>
 
-    <TabPane fx:id="tabs" VBox.vgrow="NEVER">
-        <padding>
-            <Insets top="5" right="10" bottom="10" left="10"/>
-        </padding>
-        <Tab text="Book Info" closable="false">
-            <tooltip>
-                <Tooltip text="%bookinfo.tooltip.tab"/>
-            </tooltip>
-            <fx:include source="book_info.fxml"/>
-        </Tab>
-        <Tab text="Art Work" closable="false">
-            <tooltip>
-                <Tooltip text="%artwork.tooltip.tab"/>
-            </tooltip>
-            <fx:include source="art_work.fxml"/>
-        </Tab>
+        <TabPane fx:id="tabs" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets top="4" right="8" bottom="4" left="8"/>
+            </padding>
+            <Tab text="Book Info" closable="false">
+                <tooltip>
+                    <Tooltip text="%bookinfo.tooltip.tab"/>
+                </tooltip>
+                <fx:include source="book_info.fxml"/>
+            </Tab>
+            <Tab text="Art Work" closable="false">
+                <tooltip>
+                    <Tooltip text="%artwork.tooltip.tab"/>
+                </tooltip>
+                <fx:include source="art_work.fxml"/>
+            </Tab>
 
-        <Tab text="Quality" closable="false">
-            <tooltip>
-                <Tooltip text="%output.tooltip.tab"/>
-            </tooltip>
-            <fx:include source="output.fxml"/>
-        </Tab>
-    </TabPane>
+            <Tab text="Quality" closable="false">
+                <tooltip>
+                    <Tooltip text="%output.tooltip.tab"/>
+                </tooltip>
+                <fx:include source="output.fxml"/>
+            </Tab>
+        </TabPane>
+    </VBox>
+    </SplitPane>
 
 </VBox>
