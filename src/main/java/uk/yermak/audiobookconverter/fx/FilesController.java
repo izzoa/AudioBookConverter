@@ -31,7 +31,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
@@ -222,6 +221,69 @@ public class FilesController {
 
 
     private void processFiles(List<String> fileNames) {
+        if (fileNames == null || fileNames.isEmpty()) {
+            return;
+        }
+
+        // For small file counts, process directly without showing progress dialog
+        if (fileNames.size() <= 3) {
+            processFilesDirectly(fileNames);
+            return;
+        }
+
+        // Show progress dialog for larger file counts
+        FileLoadingProgressDialog progressDialog = new FileLoadingProgressDialog(AudiobookConverter.getEnv().getWindow());
+        progressDialog.setTotalFiles(fileNames.size());
+        progressDialog.show();
+
+        // Process files in background thread
+        Executors.newSingleThreadExecutor().submit(() -> {
+            try {
+                FFMediaLoader mediaLoader = new FFMediaLoader(fileNames, AudiobookConverter.getContext().getConversionGroup());
+                AudiobookConverter.getContext().setMediaLoader(mediaLoader);
+                
+                // Load with progress callback
+                List<MediaInfo> addedMedia = mediaLoader.loadMediaInfo(progressDialog::fileProcessed);
+                
+                progressDialog.setComplete();
+                
+                // Update UI on JavaFX thread
+                Platform.runLater(() -> {
+                    if (chaptersMode.get()) {
+                        AudiobookConverter.getContext().constructBook(addedMedia);
+                        bookStructure.updateBookStructure();
+                    } else {
+                        AudiobookConverter.getContext().addNewMedia(addedMedia);
+                    }
+                    
+                    // Small delay before closing to show completion
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(300);
+                        } catch (InterruptedException ignored) {
+                        }
+                        progressDialog.close();
+                    }).start();
+                });
+            } catch (Exception e) {
+                logger.error("Error loading files", e);
+                progressDialog.setError("Failed to load files");
+                Platform.runLater(() -> {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException ignored) {
+                    }
+                    progressDialog.close();
+                    showError(e);
+                });
+            }
+        });
+    }
+
+    /**
+     * Process files directly without showing progress dialog (for small file counts).
+     */
+    private void processFilesDirectly(List<String> fileNames) {
         FFMediaLoader mediaLoader = new FFMediaLoader(fileNames, AudiobookConverter.getContext().getConversionGroup());
         AudiobookConverter.getContext().setMediaLoader(mediaLoader);
         List<MediaInfo> addedMedia = mediaLoader.loadMediaInfo();

@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 /**
  * Background media info loader. Media files are processed in the same order as passed to the constructor.
@@ -40,6 +41,16 @@ public class FFMediaLoader {
     }
 
     public List<MediaInfo> loadMediaInfo() {
+        return loadMediaInfo(null);
+    }
+
+    /**
+     * Loads media information for all files with optional progress callback.
+     *
+     * @param progressCallback callback invoked for each file processed (receives the filename)
+     * @return list of MediaInfo objects
+     */
+    public List<MediaInfo> loadMediaInfo(Consumer<String> progressCallback) {
         logger.info("Loading media info");
         try {
             FFprobe ffprobe = new FFprobe(Platform.FFPROBE);
@@ -50,6 +61,11 @@ public class FFMediaLoader {
                 logger.info("MediaLoader submitted for file:" + fileName);
                 MediaInfo mediaInfo = new MediaInfoProxy(fileName, futureLoad);
                 media.add(mediaInfo);
+                
+                // Notify progress callback
+                if (progressCallback != null) {
+                    progressCallback.accept(fileName);
+                }
             }
             try {
                 searchForPosters(media);
@@ -63,6 +79,15 @@ public class FFMediaLoader {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Returns the number of files to be loaded.
+     *
+     * @return the file count
+     */
+    public int getFileCount() {
+        return fileNames.size();
     }
 
     public void detach() {

@@ -4,80 +4,69 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.stage.Screen?>
-<GridPane xmlns:fx="http://javafx.com/fxml" hgap="8" vgap="4" fx:controller="uk.yermak.audiobookconverter.fx.BookInfoController" gridLinesVisible="false" styleClass="book-info-form">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="uk.yermak.audiobookconverter.fx.BookInfoController">
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
-
-    <padding>
-        <Insets top="4" right="12" bottom="4" left="12"/>
-    </padding>
+    <GridPane hgap="8" vgap="6" styleClass="book-info-form"
+              AnchorPane.topAnchor="8" AnchorPane.bottomAnchor="8"
+              AnchorPane.leftAnchor="12" AnchorPane.rightAnchor="12">
     <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" percentWidth="8"/>
-        <ColumnConstraints hgrow="ALWAYS" percentWidth="42"/>
-        <ColumnConstraints hgrow="NEVER" percentWidth="8"/>
-        <ColumnConstraints hgrow="ALWAYS" percentWidth="42"/>
+        <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+        <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="32" prefHeight="36"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="32" prefHeight="36"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="32" prefHeight="36"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="32" prefHeight="36"/>
     </rowConstraints>
     <children>
 
-        <Label text="%bookinfo.label.title" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
-        <Label text="%bookinfo.label.writer" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
-        <Label text="%bookinfo.label.narrator" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT"/>
-        <Label text="%bookinfo.label.genre" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
-
-        <TextField fx:id="title" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <TextField fx:id="title" promptText="Title" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="%bookinfo.tooltip.title"/>
             </tooltip>
         </TextField>
-        <TextField fx:id="writer" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <tooltip>
-                <Tooltip text="%bookinfo.tooltip.author"/>
-            </tooltip>
-        </TextField>
-        <TextField fx:id="narrator" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <tooltip>
-                <Tooltip text="%bookinfo.tooltip.narrator"/>
-            </tooltip>
-        </TextField>
-        <ComboBox fx:id="genre" GridPane.columnIndex="1" GridPane.rowIndex="3" editable="true">
-            <tooltip>
-                <Tooltip text="%bookinfo.tooltip.genre"/>
-            </tooltip>
-        </ComboBox>
-
-        <Label text="%bookinfo.label.series" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
-        <Label text="%bookinfo.label.bookno" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
-        <Label text="%bookinfo.label.year" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.halignment="RIGHT"/>
-        <Label text="%bookinfo.label.comment" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
-
-        <TextField fx:id="series" GridPane.columnIndex="3" GridPane.rowIndex="0">
+        <TextField fx:id="series" promptText="Series" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="%bookinfo.tooltip.series"/>
             </tooltip>
         </TextField>
-        <TextField fx:id="bookNo" GridPane.columnIndex="3" GridPane.rowIndex="1">
+
+        <TextField fx:id="writer" promptText="Writer / Author" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS">
+            <tooltip>
+                <Tooltip text="%bookinfo.tooltip.author"/>
+            </tooltip>
+        </TextField>
+        <TextField fx:id="bookNo" promptText="Book #" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="%bookinfo.tooltip.bookno"/>
             </tooltip>
         </TextField>
-        <TextField fx:id="year" GridPane.columnIndex="3" GridPane.rowIndex="2">
+
+        <TextField fx:id="narrator" promptText="Narrator" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS">
+            <tooltip>
+                <Tooltip text="%bookinfo.tooltip.narrator"/>
+            </tooltip>
+        </TextField>
+        <TextField fx:id="year" promptText="Year" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="%bookinfo.tooltip.year"/>
             </tooltip>
         </TextField>
 
-        <TextField fx:id="comment" GridPane.columnIndex="3" GridPane.rowIndex="3">
+        <ComboBox fx:id="genre" promptText="Genre" GridPane.columnIndex="0" GridPane.rowIndex="3" editable="true" maxWidth="Infinity" GridPane.hgrow="ALWAYS" styleClass="combo-box-base, editable-dropdown">
+            <tooltip>
+                <Tooltip text="%bookinfo.tooltip.genre"/>
+            </tooltip>
+        </ComboBox>
+        <TextField fx:id="comment" promptText="Comment" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="%bookinfo.tooltip.comment"/>
             </tooltip>
         </TextField>
 
     </children>
-</GridPane>
+    </GridPane>
+</AnchorPane>

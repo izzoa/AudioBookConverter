@@ -4,26 +4,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.stage.Screen?>
-<GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="uk.yermak.audiobookconverter.fx.ArtWorkController" vgap="4" hgap="8"
-          gridLinesVisible="false" styleClass="artwork-container">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="uk.yermak.audiobookconverter.fx.ArtWorkController">
     <fx:define>
         <Screen fx:factory="getPrimary" fx:id="screen"/>
     </fx:define>
-
-    <padding>
-        <Insets top="8" right="12" bottom="8" left="12"/>
-    </padding>
+    <GridPane vgap="6" hgap="8" styleClass="artwork-container"
+              AnchorPane.topAnchor="4" AnchorPane.bottomAnchor="4"
+              AnchorPane.leftAnchor="8" AnchorPane.rightAnchor="8">
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" percentWidth="75"/>
-        <ColumnConstraints hgrow="NEVER" percentWidth="12"/>
-        <ColumnConstraints hgrow="NEVER" percentWidth="12"/>
+        <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+        <ColumnConstraints hgrow="NEVER" minWidth="60"/>
+        <ColumnConstraints hgrow="NEVER" minWidth="60"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
-        <RowConstraints vgrow="ALWAYS" percentHeight="25"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="28" prefHeight="32"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="28" prefHeight="32"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="28" prefHeight="32"/>
+        <RowConstraints vgrow="SOMETIMES" minHeight="28" prefHeight="32"/>
     </rowConstraints>
     <children>
         <ListView fx:id="imageList" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="4"
@@ -68,4 +65,5 @@
             </tooltip>
         </Button>
     </children>
-</GridPane>
+    </GridPane>
+</AnchorPane>

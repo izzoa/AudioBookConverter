@@ -165,7 +165,7 @@
         <Insets top="8" right="8" bottom="8" left="8"/>
     </padding>
 
-    <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.5">
+    <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.45">
     <TabPane fx:id="filesChapters" SplitPane.resizableWithParent="true">
             <padding>
                 <Insets top="8" right="8" bottom="8" left="8"/>
@@ -395,12 +395,12 @@
             </Tab>
         </TabPane>
 
-    <VBox SplitPane.resizableWithParent="true">
+    <VBox SplitPane.resizableWithParent="true" minHeight="220">
         <fx:include source="mediaplayer.fxml"/>
 
-        <TabPane fx:id="tabs" VBox.vgrow="ALWAYS">
+        <TabPane fx:id="tabs" VBox.vgrow="ALWAYS" minHeight="150">
             <padding>
-                <Insets top="4" right="8" bottom="4" left="8"/>
+                <Insets top="2" right="4" bottom="2" left="4"/>
             </padding>
             <Tab text="Book Info" closable="false">
                 <tooltip>
