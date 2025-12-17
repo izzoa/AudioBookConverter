@@ -227,7 +227,7 @@
                         <Insets top="8" right="8" bottom="8" left="8"/>
                     </padding>
                     <ToolBar>
-                        <Button text="Add" minWidth="${screen.visualBounds.width * 0.04}"
+                        <Button fx:id="addButton" text="Add" minWidth="${screen.visualBounds.width * 0.04}"
                                 onAction="#addFiles">
                             <tooltip>
                                 <Tooltip text="%files.tooltip.button_add"/>

@@ -286,3 +286,20 @@
     -fx-pref-height: 10px;
 }
 
+
+/* ============================================
+   ICON STYLES
+   ============================================ */
+
+.ikonli-font-icon {
+    -fx-icon-color: -fx-text-fill;
+    -fx-icon-size: 16px;
+}
+
+.icon-primary { -fx-icon-color: -fx-color-primary; }
+.icon-secondary { -fx-icon-color: -fx-color-text-secondary; }
+.icon-accent { -fx-icon-color: -fx-color-accent; }
+.icon-success { -fx-icon-color: -fx-color-success; }
+.icon-warning { -fx-icon-color: -fx-color-warning; }
+.icon-error { -fx-icon-color: -fx-color-error; }
+.icon-white { -fx-icon-color: white; }

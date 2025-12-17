@@ -25,6 +25,7 @@ import uk.yermak.audiobookconverter.book.Convertable;
 import uk.yermak.audiobookconverter.book.MediaInfo;
 import uk.yermak.audiobookconverter.book.Organisable;
 import uk.yermak.audiobookconverter.loaders.FFMediaLoader;
+import uk.yermak.audiobookconverter.fx.IconLoader;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -45,7 +46,6 @@ public class FilesController {
     final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     public MenuItem removeMenu;
 
-
     @FXML
     private Button addButton;
     @FXML
@@ -64,13 +64,11 @@ public class FilesController {
     @FXML
     private Tab queueTab;
 
-
     @FXML
     private ListView<ProgressComponent> progressQueue;
 
     @FXML
     private TabPane tabs;
-
 
     @FXML
     private Button pauseButton;
@@ -88,7 +86,7 @@ public class FilesController {
 
     @FXML
     private Menu recentSourceMenu;
-    
+
     @FXML
     private Menu recentOutputMenu;
 
@@ -96,8 +94,7 @@ public class FilesController {
 
     private final BooleanProperty chaptersMode = new SimpleBooleanProperty(false);
 
-
-    //TODO move columns into BookStructureComponent
+    // TODO move columns into BookStructureComponent
     @FXML
     private TreeTableColumn<Organisable, String> chapterColumn;
     @FXML
@@ -105,15 +102,21 @@ public class FilesController {
     @FXML
     private TreeTableColumn<Organisable, String> detailsColumn;
 
-
     @FXML
     public void initialize() {
         addDragEvenHandlers(bookStructure);
         addDragEvenHandlers(fileList);
         addDragEvenHandlers(progressQueue);
 
+        // Apply Icons
+        addButton.setGraphic(IconLoader.loadIcon("add_24", 20, "icon-white")); // Primary button usually white text
+        clearButton.setGraphic(IconLoader.loadIcon("delete_24", 20, "icon-error"));
+        importButton.setGraphic(IconLoader.loadIcon("arrow_import_24", 20, "icon-secondary"));
+        startButton.setGraphic(IconLoader.loadIcon("play_24", 20, "icon-white"));
+
         Settings settings = Settings.loadSetting();
-        AudiobookConverter.getContext().setPresetName(settings.getPresets().get(settings.getLastUsedPreset()).getName());
+        AudiobookConverter.getContext()
+                .setPresetName(settings.getPresets().get(settings.getLastUsedPreset()).getName());
 
         initFileOpenMenu();
         refreshRecentMenus();
@@ -122,30 +125,35 @@ public class FilesController {
         ObservableList<MediaInfo> selectedMedia = context.getSelectedMedia();
 
         selectedMedia.addListener((InvalidationListener) observable -> {
-            if (selectedMedia.isEmpty() || chaptersMode.get()) return;
+            if (selectedMedia.isEmpty() || chaptersMode.get())
+                return;
             fileList.reselect();
         });
 
         filesChapters.getTabs().remove(filesTab);
         filesChapters.getTabs().remove(chaptersTab);
 
-
         bookStructure.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        bookStructure.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TreeItem<Organisable>>) c -> {
-            List<MediaInfo> list = AudiobookConverter.getContext().getSelectedMedia();
-            list.clear();
-            List<MediaInfo> newList = c.getList().stream().flatMap(item -> item.getValue().getMedia().stream()).collect(Collectors.toList());
-            list.addAll(newList);
-        });
+        bookStructure.getSelectionModel().getSelectedItems()
+                .addListener((ListChangeListener<TreeItem<Organisable>>) c -> {
+                    List<MediaInfo> list = AudiobookConverter.getContext().getSelectedMedia();
+                    list.clear();
+                    List<MediaInfo> newList = c.getList().stream().flatMap(item -> item.getValue().getMedia().stream())
+                            .collect(Collectors.toList());
+                    list.addAll(newList);
+                });
 
         chapterColumn.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getTitle()));
         detailsColumn.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getValue().getDetails()));
-        durationColumn.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(Utils.formatTime(p.getValue().getValue().getDuration())));
+        durationColumn.setCellValueFactory(
+                p -> new ReadOnlyObjectWrapper<>(Utils.formatTime(p.getValue().getValue().getDuration())));
 
         importButton.setDisable(true);
 
-        chaptersMode.addListener((observableValue, oldValue, newValue) -> importButton.setDisable(newValue || fileList.getItems().isEmpty()));
-        fileList.getItems().addListener((ListChangeListener<MediaInfo>) change -> importButton.setDisable(fileList.getItems().isEmpty()));
+        chaptersMode.addListener((observableValue, oldValue, newValue) -> importButton
+                .setDisable(newValue || fileList.getItems().isEmpty()));
+        fileList.getItems().addListener(
+                (ListChangeListener<MediaInfo>) change -> importButton.setDisable(fileList.getItems().isEmpty()));
 
         context.addSpeedChangeListener((observableValue, oldValue, newValue) -> {
             if (chaptersMode.get()) {
@@ -156,12 +164,13 @@ public class FilesController {
 
     private void initFileOpenMenu() {
         MenuItem item1 = new MenuItem("Files");
+        item1.setGraphic(IconLoader.loadIcon("document_24", 16));
         item1.setOnAction(e -> selectFiles());
         MenuItem item2 = new MenuItem("Folder");
+        item2.setGraphic(IconLoader.loadIcon("folder_open_24", 16));
         item2.setOnAction(e -> selectFolder());
         contextMenu.getItems().addAll(item1, item2);
     }
-
 
     private void addDragEvenHandlers(Control control) {
         try {
@@ -194,7 +203,6 @@ public class FilesController {
         }
     }
 
-
     @FXML
     protected void addFiles(ActionEvent event) {
         Button node = (Button) event.getSource();
@@ -219,7 +227,6 @@ public class FilesController {
         }
     }
 
-
     private void processFiles(List<String> fileNames) {
         if (fileNames == null || fileNames.isEmpty()) {
             return;
@@ -232,21 +239,23 @@ public class FilesController {
         }
 
         // Show progress dialog for larger file counts
-        FileLoadingProgressDialog progressDialog = new FileLoadingProgressDialog(AudiobookConverter.getEnv().getWindow());
+        FileLoadingProgressDialog progressDialog = new FileLoadingProgressDialog(
+                AudiobookConverter.getEnv().getWindow());
         progressDialog.setTotalFiles(fileNames.size());
         progressDialog.show();
 
         // Process files in background thread
         Executors.newSingleThreadExecutor().submit(() -> {
             try {
-                FFMediaLoader mediaLoader = new FFMediaLoader(fileNames, AudiobookConverter.getContext().getConversionGroup());
+                FFMediaLoader mediaLoader = new FFMediaLoader(fileNames,
+                        AudiobookConverter.getContext().getConversionGroup());
                 AudiobookConverter.getContext().setMediaLoader(mediaLoader);
-                
+
                 // Load with progress callback
                 List<MediaInfo> addedMedia = mediaLoader.loadMediaInfo(progressDialog::fileProcessed);
-                
+
                 progressDialog.setComplete();
-                
+
                 // Update UI on JavaFX thread
                 Platform.runLater(() -> {
                     if (chaptersMode.get()) {
@@ -255,7 +264,7 @@ public class FilesController {
                     } else {
                         AudiobookConverter.getContext().addNewMedia(addedMedia);
                     }
-                    
+
                     // Small delay before closing to show completion
                     new Thread(() -> {
                         try {
@@ -281,7 +290,8 @@ public class FilesController {
     }
 
     /**
-     * Process files directly without showing progress dialog (for small file counts).
+     * Process files directly without showing progress dialog (for small file
+     * counts).
      */
     private void processFilesDirectly(List<String> fileNames) {
         FFMediaLoader mediaLoader = new FFMediaLoader(fileNames, AudiobookConverter.getContext().getConversionGroup());
@@ -312,7 +322,6 @@ public class FilesController {
         DialogStyleHelper.styleAlert(alert);
         alert.showAndWait();
     }
-
 
     public void selectFiles() {
         try {
@@ -409,11 +418,11 @@ public class FilesController {
         }
     }
 
-
     public void start(ActionEvent actionEvent) {
         try {
             ConversionContext context = AudiobookConverter.getContext();
-            if (context.getBook() == null && fileList.getItems().isEmpty()) return;
+            if (context.getBook() == null && fileList.getItems().isEmpty())
+                return;
 
             String outputDestination = DialogHelper.selectOutputFile(AudiobookConverter.getContext().getBookInfo());
 
@@ -423,14 +432,16 @@ public class FilesController {
 
             ConversionGroup conversionGroup = AudiobookConverter.getContext().detach();
 
-/* TODO!!!!
-        conversionGroup.setOutputParameters(new OutputParameters(context.getOutputParameters()));
-        conversionGroup.setBookInfo(context.getBookInfo().get());
-        conversionGroup.setPosters(new ArrayList<>(context.getPosters()));
-*/
+            /*
+             * TODO!!!!
+             * conversionGroup.setOutputParameters(new
+             * OutputParameters(context.getOutputParameters()));
+             * conversionGroup.setBookInfo(context.getBookInfo().get());
+             * conversionGroup.setPosters(new ArrayList<>(context.getPosters()));
+             */
 
-            ProgressComponent placeHolderProgress = new ProgressComponent(new ConversionProgress(new ConversionJob(conversionGroup, Convertable.EMPTY, Collections.emptyMap(), outputDestination)));
-
+            ProgressComponent placeHolderProgress = new ProgressComponent(new ConversionProgress(
+                    new ConversionJob(conversionGroup, Convertable.EMPTY, Collections.emptyMap(), outputDestination)));
 
             Executors.newSingleThreadExecutor().submit(() -> {
                 Platform.runLater(() -> {
@@ -480,7 +491,6 @@ public class FilesController {
             fileList.getItems().clear();
             chaptersMode.set(true);
 
-
             long lastBookUpdate = System.currentTimeMillis();
             book.addListener(observable -> {
                 logger.debug("Captured book modification");
@@ -522,7 +532,6 @@ public class FilesController {
             throw new RuntimeException(e);
         }
     }
-
 
     @FXML
     public void pause(ActionEvent actionEvent) {
@@ -591,13 +600,13 @@ public class FilesController {
         System.exit(0);
     }
 
-
     public void clearQueue(ActionEvent actionEvent) {
         try {
             ObservableList<ProgressComponent> items = progressQueue.getItems();
             List<ProgressComponent> dones = new ArrayList<>();
             for (ProgressComponent item : items) {
-                if (item.isOver()) dones.add(item);
+                if (item.isOver())
+                    dones.add(item);
             }
             Platform.runLater(() -> {
                 for (ProgressComponent done : dones) {
@@ -639,15 +648,17 @@ public class FilesController {
     public void openIssues(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Report bug");
-        alert.setContentText("Your setting will be copied into buffer and you will be redirected to GitHub issues page.\n" +
-                "Please describe your problem and paste settings into the issue.\n" +
-                "Note: Your settings may contain sensitive information like your user name, paths to your files, etc.\n");
+        alert.setContentText(
+                "Your setting will be copied into buffer and you will be redirected to GitHub issues page.\n" +
+                        "Please describe your problem and paste settings into the issue.\n" +
+                        "Note: Your settings may contain sensitive information like your user name, paths to your files, etc.\n");
         DialogStyleHelper.styleAlert(alert);
         Optional<ButtonType> result = alert.showAndWait();
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             Properties properties = System.getProperties();
-            clipboard.setContents(new StringSelection(Utils.propertiesToString(properties) + "\n" + Settings.getRawData()), null);
+            clipboard.setContents(
+                    new StringSelection(Utils.propertiesToString(properties) + "\n" + Settings.getRawData()), null);
             AudiobookConverter.getEnv().showDocument("https://github.com/yermak/AudioBookConverter/issues");
         }
     }
@@ -670,8 +681,7 @@ public class FilesController {
             fileChooser.setTitle("Export Settings");
             fileChooser.setInitialFileName("audiobookconverter-settings.json");
             fileChooser.getExtensionFilters().add(
-                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
-            );
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File file = fileChooser.showSaveDialog(AudiobookConverter.getEnv().getWindow());
             if (file != null) {
                 Settings settings = Settings.loadSetting();
@@ -689,20 +699,22 @@ public class FilesController {
             javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
             fileChooser.setTitle("Import Settings");
             fileChooser.getExtensionFilters().add(
-                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
-            );
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File file = fileChooser.showOpenDialog(AudiobookConverter.getEnv().getWindow());
             if (file != null) {
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmAlert.setTitle("Import Settings");
                 confirmAlert.setHeaderText("Import settings from file?");
-                confirmAlert.setContentText("This will replace your current settings.\nThe application will restart to apply changes.\n\nFile: " + file.getName());
+                confirmAlert.setContentText(
+                        "This will replace your current settings.\nThe application will restart to apply changes.\n\nFile: "
+                                + file.getName());
                 DialogStyleHelper.styleAlert(confirmAlert);
                 Optional<ButtonType> result = confirmAlert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     Settings imported = Settings.importFromFile(file);
                     imported.save();
-                    showInfoAlert("Import Successful", "Settings imported successfully.\nThe application will now restart.");
+                    showInfoAlert("Import Successful",
+                            "Settings imported successfully.\nThe application will now restart.");
                     // Restart application
                     Platform.runLater(() -> {
                         AudiobookConverter.getContext().stopConversions();
@@ -720,7 +732,7 @@ public class FilesController {
         try {
             Settings settings = Settings.loadSetting();
             List<Preset> presets = settings.getPresets();
-            
+
             if (presets.isEmpty()) {
                 showInfoAlert("No Presets", "There are no presets to export.");
                 return;
@@ -730,12 +742,11 @@ public class FilesController {
             fileChooser.setTitle("Export Presets");
             fileChooser.setInitialFileName("audiobookconverter-presets.json");
             fileChooser.getExtensionFilters().add(
-                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
-            );
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File file = fileChooser.showSaveDialog(AudiobookConverter.getEnv().getWindow());
             if (file != null) {
                 Settings.exportPresetsToFile(presets, file);
-                showInfoAlert("Export Successful", 
+                showInfoAlert("Export Successful",
                         "Exported " + presets.size() + " preset(s) to:\n" + file.getAbsolutePath());
             }
         } catch (Exception e) {
@@ -749,38 +760,39 @@ public class FilesController {
             javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
             fileChooser.setTitle("Import Presets");
             fileChooser.getExtensionFilters().add(
-                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json")
-            );
+                    new javafx.stage.FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File file = fileChooser.showOpenDialog(AudiobookConverter.getEnv().getWindow());
             if (file != null) {
                 List<Preset> importedPresets = Settings.importPresetsFromFile(file);
-                
+
                 // Ask user whether to merge or replace
                 Alert choiceAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 choiceAlert.setTitle("Import Presets");
                 choiceAlert.setHeaderText("Found " + importedPresets.size() + " preset(s) to import");
                 choiceAlert.setContentText("How would you like to import these presets?");
-                
+
                 ButtonType mergeButton = new ButtonType("Merge (keep existing)");
                 ButtonType replaceButton = new ButtonType("Replace All");
                 ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-                
+
                 choiceAlert.getButtonTypes().setAll(mergeButton, replaceButton, cancelButton);
                 DialogStyleHelper.styleAlert(choiceAlert);
-                
+
                 Optional<ButtonType> result = choiceAlert.showAndWait();
                 if (result.isPresent()) {
                     Settings settings = Settings.loadSetting();
                     if (result.get() == mergeButton) {
                         settings.mergePresets(importedPresets);
                         settings.save();
-                        showInfoAlert("Import Successful", 
-                                "Merged " + importedPresets.size() + " preset(s).\nRestart the application to see changes in the preset dropdown.");
+                        showInfoAlert("Import Successful",
+                                "Merged " + importedPresets.size()
+                                        + " preset(s).\nRestart the application to see changes in the preset dropdown.");
                     } else if (result.get() == replaceButton) {
                         settings.replacePresets(importedPresets);
                         settings.save();
-                        showInfoAlert("Import Successful", 
-                                "Replaced all presets with " + importedPresets.size() + " imported preset(s).\nRestart the application to see changes.");
+                        showInfoAlert("Import Successful",
+                                "Replaced all presets with " + importedPresets.size()
+                                        + " imported preset(s).\nRestart the application to see changes.");
                     }
                 }
             }
@@ -804,7 +816,7 @@ public class FilesController {
      */
     public void refreshRecentMenus() {
         Settings settings = Settings.loadSetting();
-        
+
         // Refresh source folders menu
         recentSourceMenu.getItems().clear();
         List<String> recentSources = settings.getRecentSourceFolders();
@@ -829,7 +841,7 @@ public class FilesController {
                 recentSourceMenu.getItems().add(emptyItem);
             }
         }
-        
+
         // Refresh output folders menu
         recentOutputMenu.getItems().clear();
         List<String> recentOutputs = settings.getRecentOutputFolders();
@@ -860,7 +872,8 @@ public class FilesController {
      * Shortens a path for display in menu, showing last 2-3 components.
      */
     private String shortenPath(String path) {
-        if (path.length() <= 50) return path;
+        if (path.length() <= 50)
+            return path;
         File file = new File(path);
         String name = file.getName();
         File parent = file.getParentFile();
@@ -868,7 +881,8 @@ public class FilesController {
             String parentName = parent.getName();
             File grandparent = parent.getParentFile();
             if (grandparent != null) {
-                return "..." + File.separator + grandparent.getName() + File.separator + parentName + File.separator + name;
+                return "..." + File.separator + grandparent.getName() + File.separator + parentName + File.separator
+                        + name;
             }
             return "..." + File.separator + parentName + File.separator + name;
         }
